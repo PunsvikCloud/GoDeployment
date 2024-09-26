@@ -20,6 +20,11 @@ jobs:
           k8s-url: ${{ secrets.KUBERNETES_URL }}
           k8s-secret: ${{ secrets.KUBERNETES_SECRET }}
 
+      - uses: azure/setup-kubectl@v4
+        id: install
+        with:
+          version: 'v1.29.9'
+
       - name: Deploys application
         uses: azure/k8s-deploy@v5
         with:
