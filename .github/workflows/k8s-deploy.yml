@@ -1,0 +1,28 @@
+name: Test deploy to Kubernetes
+
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    permissions:
+      actions: read
+      contents: read
+      
+    runs-on: self-hosted
+    steps:
+      - uses: actions/checkout@master
+      
+      - name: Set K8s context
+        uses: azure/k8s-set-context@v4
+        with:
+          method: service-account
+          k8s-url: ${{ secrets.KUBERNETES_URL }}
+          k8s-secret: ${{ secrets.KUBERNETES_SECRET }}
+
+      - name: Deploys application
+        uses: azure/k8s-deploy@v5
+        with:
+          action: deploy
+          manifests: |
+            kubernetes/deployment.yml
