@@ -25,4 +25,4 @@ jobs:
         with:
           action: deploy
           manifests: |
-            kubernetes/deployment.yml
+            kubernetes/deployment.yaml
