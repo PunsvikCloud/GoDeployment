@@ -1,8 +1,12 @@
-# Use the official NGINX image
-FROM nginx:latest
+FROM golang:1.23-alpine AS build
+WORKDIR /app
+COPY go.mod go.sum ./
+RUN go mod download
+COPY . .
+RUN go build -o GoDeployment .
 
-# Expose port 80
-EXPOSE 80
-
-# Start NGINX
-CMD ["nginx", "-g", "daemon off;"]
+FROM alpine:latest
+WORKDIR /root/
+COPY --from=build /app/GoDeployment .
+EXPOSE 8080
+CMD ["./GoDeployment"]
