@@ -16,6 +16,6 @@ spec:
     spec:
       containers:
         - name: go-deployment
-          image: ghcr.io/punsvikcloud/godeployment:main
+          image: ghcr.io/punsvikcloud/godeployment
           ports:
             - containerPort: 8080
