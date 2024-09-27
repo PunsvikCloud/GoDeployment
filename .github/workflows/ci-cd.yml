@@ -117,7 +117,7 @@ jobs:
           namespace: ${{ env.K8S_NAMESPACE }}
           secret-name: regcred
           container-registry-url: ${{ env.REGISTRY }}
-          container-registry-username: bjornkpu
+          container-registry-username: ${{ github.actor }}
           container-registry-password: ${{ secrets.GHCR_PULL_TOKEN }}
 
       - name: Deploy application
