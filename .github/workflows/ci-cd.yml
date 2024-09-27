@@ -110,6 +110,16 @@ jobs:
         with:
           version: 'v1.29.9'
 
+      - name: Set imagePullSecret
+        uses: azure/k8s-create-secret@v4
+        id: create-secret
+        with:
+          namespace: ${{ env.K8S_NAMESPACE }}
+          secret-name: regcred
+          container-registry-url: ${{ env.REGISTRY }}
+          container-registry-username: bjornkpu
+          container-registry-password: ${{ secrets.GHCR_PULL_TOKEN }}
+
       - name: Deploy application
         uses: azure/k8s-deploy@v5
         with:
