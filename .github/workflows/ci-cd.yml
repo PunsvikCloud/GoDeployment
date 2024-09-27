@@ -37,9 +37,6 @@ jobs:
       packages: write
       attestations: write
       id-token: write
-    env:
-      REGISTRY: ghcr.io
-      IMAGE_NAME: ${{ github.repository }}
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
@@ -52,7 +49,7 @@ jobs:
       - name: Log in to the Container registry
         uses: docker/login-action@v3
         with:
-          registry: ${{ env.REGISTRY }}
+          registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN  }}
 
@@ -60,7 +57,11 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          images: ghcr.io/${{ github.repository }}
+          tags: |
+            type=ref,event=branch
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
 
       - name: Build and push Docker image
         id: push
@@ -112,6 +113,5 @@ jobs:
         with:
           action: deploy
           manifests: k8s
-          pull-images: false
           namespace: ${{ env.K8S_NAMESPACE }}
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}

@@ -19,3 +19,5 @@ spec:
           image: ghcr.io/punsvikcloud/godeployment
           ports:
             - containerPort: 8080
+      imagePullSecrets:
+        - name: regcred
