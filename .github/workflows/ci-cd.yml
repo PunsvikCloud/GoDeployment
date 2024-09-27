@@ -81,6 +81,7 @@ jobs:
     env:
       REGISTRY: ghcr.io
       IMAGE_NAME: ${{ github.repository }}
+      K8S_NAMESPACE: go-deployment
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
@@ -103,5 +104,5 @@ jobs:
         with:
           action: deploy
           manifests: k8s
-          namespace: ${{ github.repository }}
+          namespace: ${{ env.K8S_NAMESPACE }}
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
