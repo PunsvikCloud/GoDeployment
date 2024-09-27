@@ -7,7 +7,7 @@ on:
 
 jobs:
   go-build:
-    runs-on: self-hosted
+    runs-on: [self-hosted, linux, ARM64]
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
@@ -30,7 +30,7 @@ jobs:
         run: go test
 
   docker-build-push:
-    runs-on: self-hosted
+    runs-on: [self-hosted, linux, ARM64]
     needs: go-build
     permissions:
       contents: read
@@ -76,7 +76,7 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
 
   deploy:
-    runs-on: self-hosted
+    runs-on: [self-hosted, linux, ARM64]
     needs: docker-build-push
     permissions:
       id-token: write
