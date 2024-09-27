@@ -1,25 +1,21 @@
 package main
 
 import (
-	"fmt"
-	"log"
 	"net/http"
 	"time"
+
+	"github.com/labstack/echo/v4"
 )
 
 func main() {
-	http.HandleFunc("/", func(w http.ResponseWriter, _ *http.Request) {
-		w.WriteHeader(http.StatusOK)
-		_, err := w.Write([]byte(getStringWithTimestamp()))
-		if err != nil {
-			return
-		}
+	e := echo.New()
+	e.GET("/", func(c echo.Context) error {
+		return c.String(http.StatusOK, getStringWithTimestamp())
 	})
-
-	log.Fatal(http.ListenAndServe(":8080", nil)) //nolint:gosec
+	e.Logger.Fatal(e.Start(":8080"))
 }
 
 // getStringWithTimestamp returns the string with "OK" and the current timestamp
 func getStringWithTimestamp() string {
-	return fmt.Sprintf("OK - %s", time.Now().Format(time.RFC3339))
+	return "OK - " + time.Now().Format(time.RFC3339)
 }
